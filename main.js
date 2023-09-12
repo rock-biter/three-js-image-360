@@ -2,6 +2,9 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as dat from 'lil-gui'
+import srcMap from './src/img/workshop-360.jpg'
+
+const textureLoader = new THREE.TextureLoader()
 
 /**
  * Debug
@@ -16,8 +19,16 @@ const scene = new THREE.Scene()
 /**
  * Manhattan
  */
-const material = new THREE.MeshNormalMaterial()
-const geometry = new THREE.BoxGeometry(1, 1, 1)
+
+const map = textureLoader.load(srcMap)
+map.repeat.x = -1
+map.wrapS = THREE.RepeatWrapping
+
+const material = new THREE.MeshBasicMaterial({
+	map: map,
+	side: THREE.BackSide,
+})
+const geometry = new THREE.SphereGeometry(30, 90, 90)
 
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
@@ -34,14 +45,14 @@ const sizes = {
  */
 const fov = 60
 const camera = new THREE.PerspectiveCamera(fov, sizes.width / sizes.height, 0.1)
-camera.position.set(4, 4, 4)
+camera.position.set(0, 0, 1)
 camera.lookAt(new THREE.Vector3(0, 2.5, 0))
 
 /**
  * Show the axes of coordinates system
  */
 const axesHelper = new THREE.AxesHelper(3)
-scene.add(axesHelper)
+// scene.add(axesHelper)
 
 /**
  * renderer
